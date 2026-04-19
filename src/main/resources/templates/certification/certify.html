@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Record Certification — Form 3</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+        h1 { color: #1a3a5c; }
+        nav a { color: #1a3a5c; font-weight: bold; text-decoration: none; }
+        .form-card { background: white; padding: 24px; border-radius: 6px;
+                     box-shadow: 0 1px 4px rgba(0,0,0,.1); max-width: 520px; }
+        label { display: block; margin-top: 14px; font-size: 13px; color: #444; }
+        select, input { width: 100%; padding: 8px; margin-top: 4px; border: 1px solid #ccc;
+                        border-radius: 4px; font-size: 13px; box-sizing: border-box; }
+        .radio-group { margin-top: 8px; display: flex; gap: 24px; }
+        .radio-group label { margin-top: 0; display: flex; align-items: center; gap: 6px; cursor: pointer; }
+        .radio-group input { width: auto; }
+        .btn-submit { margin-top: 18px; background: #1a3a5c; color: white; padding: 10px 22px;
+                      border: none; border-radius: 4px; cursor: pointer; font-size: 14px; }
+        .btn-back { color: #1a3a5c; text-decoration: none; margin-left: 12px; font-size: 13px; }
+        .note { font-size: 11px; color: #888; margin-top: 4px; }
+    </style>
+</head>
+<body>
+<h1>Form 3 — Record Certification Compliance</h1>
+<nav><a href="/certification">← Back to Certifications</a></nav>
+<hr/>
+<div class="form-card">
+    <form method="post" action="/certification/certify">
+
+        <label>Armor Model *
+            <select name="modelID" required>
+                <option value="">— Select model —</option>
+                <option th:each="m : ${models}"
+                        th:value="${m.modelID}"
+                        th:text="${m.modelID} + ' — ' + ${m.modelName} + ' (' + ${m.protectionLevel} + ')'">
+                </option>
+            </select>
+        </label>
+
+        <label>Certification Standard *
+            <select name="certificationCode" required>
+                <option value="">— Select certification —</option>
+                <option th:each="c : ${certifications}"
+                        th:value="${c.certificationCode}"
+                        th:text="${c.certificationCode} + ' — ' + ${c.standardName}">
+                </option>
+            </select>
+        </label>
+
+        <label>Verification Date
+            <input type="date" name="verificationDate"/>
+            <span class="note">Leave empty to use today's date</span>
+        </label>
+
+        <label>Certification Status *</label>
+        <div class="radio-group">
+            <label><input type="radio" name="isValid" value="true" checked/> ✅ Valid</label>
+            <label><input type="radio" name="isValid" value="false"/> ❌ Lapsed</label>
+        </div>
+        <span class="note">If this model–cert pair already exists, it will be updated (ON DUPLICATE KEY UPDATE)</span>
+
+        <button type="submit" class="btn-submit">💾 Save Certification</button>
+        <a href="/certification" class="btn-back">Cancel</a>
+    </form>
+</div>
+</body>
+</html>

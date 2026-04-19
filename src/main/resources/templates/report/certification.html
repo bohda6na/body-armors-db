@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Report 2 — Certification Compliance</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+        h1 { color: #1a3a5c; }
+        h2 { color: #555; font-size: 14px; font-weight: normal; margin-top: -8px; }
+        nav a { margin-right: 15px; color: #1a3a5c; font-weight: bold; text-decoration: none; }
+        table { width: 100%; border-collapse: collapse; background: white;
+                box-shadow: 0 1px 4px rgba(0,0,0,.1); font-size: 12px; }
+        th { background: #1a3a5c; color: white; padding: 9px 7px; text-align: left; }
+        td { padding: 7px; border-bottom: 1px solid #ddd; }
+        tr:hover { background: #f0f4ff; }
+        .valid  { color: #155724; font-weight: bold; }
+        .lapsed { color: #721c24; font-weight: bold; }
+        tr.lapsed-row { background: #ffe0e0; }
+    </style>
+</head>
+<body>
+<h1>Report 2 — Certification Compliance Report</h1>
+<h2>Task T3 | Stakeholder: S2 QC Inspector</h2>
+<nav>
+    <a href="/bodyarmor">Inventory</a>
+    <a href="/reports/inventory">Report 1</a>
+    <a href="/reports/readiness">Report 3</a>
+</nav>
+<hr/>
+<table>
+    <tr>
+        <th>Model ID</th><th>Model Name</th><th>Cert Code</th>
+        <th>Standard</th><th>Level</th><th>Verified</th>
+        <th>Status</th><th>Total Units</th><th>Active Units</th>
+    </tr>
+    <tr th:each="r : ${rows}"
+        th:class="${r['certStatus'] == 'Lapsed' ? 'lapsed-row' : ''}">
+        <td th:text="${r['modelID']}"></td>
+        <td th:text="${r['modelName']}"></td>
+        <td th:text="${r['certificationCode']}"></td>
+        <td th:text="${r['standardName']}"></td>
+        <td th:text="${r['protectionLevel']}"></td>
+        <td th:text="${r['verificationDate']}"></td>
+        <td>
+            <span th:text="${r['certStatus']}"
+                  th:class="${r['certStatus'] == 'Valid' ? 'valid' : 'lapsed'}"></span>
+        </td>
+        <td th:text="${r['totalUnits']}"></td>
+        <td th:text="${r['activeUnits']}"></td>
+    </tr>
+</table>
+<p style="font-size:12px;color:#888;">
+    Total records: <span th:text="${rows.size()}"></span>
+    | Red rows = Lapsed certification
+</p>
+</body>
+</html>
